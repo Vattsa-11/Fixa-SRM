@@ -50,9 +50,8 @@ jobs:
           languages: ${{ matrix.language }}
           queries: security-extended 
 
-      
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+      - name: Build
+        run: bun run build
 
       
       - name: Perform CodeQL Analysis
