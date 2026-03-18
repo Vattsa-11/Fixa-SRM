@@ -33,5 +33,5 @@ The background worker also handles push notifications. It sends webhook requests
 * Cache & Locking: Valkey
 * Queue: pgmq
 * Notifications: Supabase Real time To svelte ui using Webhook 
-* Refer the [architecture](https://github.com/Vattsa-11/Fixa-SRM/blob/main/architecture.png)
+* Refer the [architecture](https://github.com/Vattsa-11/Fixa-SRM/blob/main/assets/architecture.png)
 ***
