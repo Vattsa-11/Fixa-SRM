@@ -1,15 +1,14 @@
 # SRM-Appointment-Booker
-colour palette
-https://coolors.co/palette/2d3142-4f5d75-bfc0c0-ffffff-ef8354
-https://coolors.co/palette/e63946-f1faee-a8dadc-457b9d-1d3557
 
+##  Color Palettes
+* [Palette 1 (Dark/Slate/Orange)](https://coolors.co/palette/2d3142-4f5d75-bfc0c0-ffffff-ef8354)
+* [Palette 2 (Red/Light/Blue)](https://coolors.co/palette/e63946-f1faee-a8dadc-457b9d-1d3557)
 
-Svelte Component libraries
-https://next.melt-ui.com/components/combobox/
-https://bits-ui.com/
-https://flowbite-svelte.com/
+##  Svelte Component Libraries
+* [Melt UI](https://next.melt-ui.com/components/combobox/)
+* [Bits UI](https://bits-ui.com/)
+* [Flowbite Svelte](https://flowbite-svelte.com/)
 
-icons 
-https://phosphoricons.com/
-https://lucide.dev/
-
+##  Icons
+* [Phosphor Icons](https://phosphoricons.com/)
+* [Lucide](https://lucide.dev/)
