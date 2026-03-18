@@ -10,7 +10,7 @@ on:
       - main
       - dev
   schedule:
-    - cron: "0 6 * * 1" # Every Monday at 6am UTC — weekly deep scan
+    - cron: "0 6 * * 1" #
 
 jobs:
   analyze:
@@ -26,35 +26,35 @@ jobs:
       fail-fast: false
       matrix:
         language:
-          - javascript-typescript # Covers all your Hono + Bun TS code
+          - javascript-typescript 
 
     steps:
-      # ── 1. Checkout ────────────────────────────────────────────────────────
+   
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # ── 2. Setup Bun (so autobuild understands your project) ───────────────
+     
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
-      # ── 3. Install dependencies ────────────────────────────────────────────
+      
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      # ── 4. Initialize CodeQL ───────────────────────────────────────────────
+      
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-          queries: security-extended # Deeper than default — catches JWT, injection, XSS etc.
+          queries: security-extended 
 
-      # ── 5. Autobuild (TypeScript — no manual build needed) ─────────────────
+      
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
 
-      # ── 6. Run CodeQL Analysis ─────────────────────────────────────────────
+      
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
