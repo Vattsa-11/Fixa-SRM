@@ -14,7 +14,9 @@ jobs:
   analyze:
     name: CodeQL Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./frontend  
     permissions:
       security-events: write
       actions: read
