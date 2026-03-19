@@ -2,8 +2,7 @@
 
 ##  Color Palettes
 * [Palette 1 (Dark/Slate/Orange)](https://coolors.co/palette/2d3142-4f5d75-bfc0c0-ffffff-ef8354)
-* [Palette 2 (Red/Light/Blue)](https://coolors.co/palette/e63946-f1faee-a8dadc-457b9d-1d3557)
-* colour chosen: 2D3142,FFFFFF
+
 
 ##  Svelte Component Libraries
 * [Melt UI](https://next.melt-ui.com/components/combobox/)

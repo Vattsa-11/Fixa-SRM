@@ -1,0 +1,33 @@
+/* Fixa - Global Styles */
+/* Color Palette: #2D3142, #4F5D75, #BFC0C0, #FFFFFF, #EF8354 */
+
+:root {
+  --color-primary: #2D3142;
+  --color-secondary: #4F5D75;
+  --color-muted: #BFC0C0;
+  --color-white: #FFFFFF;
+  --color-accent: #EF8354;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: #2D3142;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+input, button {
+  font-family: inherit;
+}
