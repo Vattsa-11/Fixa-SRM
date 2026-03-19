@@ -61,8 +61,8 @@
   }
 
   .day-header {
-    background: rgba(239, 131, 84, 0.15);
-    color: var(--color-accent);
+    background: rgba(49, 45, 94, 0.15);
+    color: var(--color-white);
     font-weight: 600;
     font-size: 0.85rem;
     padding: 0.75rem 0.5rem;
@@ -91,7 +91,7 @@
   }
 
   .slot:hover {
-    background: rgba(239, 131, 84, 0.1);
+    background: rgba(49, 45, 94, 0.1);
   }
 
   @media (max-width: 768px) {

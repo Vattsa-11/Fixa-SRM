@@ -147,7 +147,7 @@
   .request-count {
     font-size: 0.8rem;
     color: var(--color-accent);
-    background: rgba(239, 131, 84, 0.15);
+    background: rgba(49, 45, 94, 0.2);
     padding: 0.4rem 0.8rem;
     border-radius: 6px;
     font-weight: 500;

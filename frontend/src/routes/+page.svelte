@@ -252,7 +252,7 @@
   }
 
   .login-btn:hover:not(:disabled) {
-    background: #e5723f;
+    background: #312d5e;
     transform: translateY(-1px);
   }
 

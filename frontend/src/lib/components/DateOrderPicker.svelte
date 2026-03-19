@@ -300,11 +300,11 @@
   }
 
   .day.selected:hover {
-    background: #e5723f;
+    background: #312d5e;
   }
 
   .day.weekend:not(.selected) {
-    color: rgba(239, 131, 84, 0.7);
+    color: var(--color-white);
   }
 
   .day.has-do:not(.selected) {
@@ -319,7 +319,7 @@
 
   .day-order {
     font-size: 0.6rem;
-    color: var(--color-accent);
+    color: var(--color-white);
     font-weight: 600;
     line-height: 1;
   }

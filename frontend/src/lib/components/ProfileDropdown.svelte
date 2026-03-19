@@ -52,25 +52,25 @@
     height: 40px;
     border: none;
     border-radius: 50%;
-    background: rgba(239, 131, 84, 0.2);
+    background: rgba(49, 45, 94, 0.2);
     color: var(--color-accent);
     cursor: pointer;
     transition: all 0.2s;
   }
 
   :global(.profile-trigger:hover) {
-    background: rgba(239, 131, 84, 0.3);
+    background: rgba(49, 45, 94, 0.3);
     transform: scale(1.05);
   }
 
   :global(.profile-trigger[data-state="open"]) {
-    background: rgba(239, 131, 84, 0.35);
+    background: rgba(49, 45, 94, 0.35);
   }
 
   :global(.profile-dropdown) {
     min-width: 180px;
     padding: 0.5rem;
-    background: rgba(30, 35, 50, 0.75);
+    background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.15);

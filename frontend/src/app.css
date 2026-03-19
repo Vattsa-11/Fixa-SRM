@@ -1,12 +1,12 @@
 /* Fixa - Global Styles */
-/* Color Palette: #2D3142, #4F5D75, #BFC0C0, #FFFFFF, #EF8354 */
+/* Color Palette: #000000, #231942, #FFFFFF (Glassmorphism) */
 
 :root {
-  --color-primary: #2D3142;
-  --color-secondary: #4F5D75;
-  --color-muted: #BFC0C0;
+  --color-primary: #000000;
+  --color-secondary: #312d5e;
+  --color-muted: rgba(255, 255, 255, 0.7);
   --color-white: #FFFFFF;
-  --color-accent: #EF8354;
+  --color-accent: #312d5e;
 }
 
 * {
@@ -23,7 +23,7 @@ html, body {
 }
 
 body {
-  background: #2D3142;
+  background: #000000;
   min-height: 100vh;
   min-height: 100dvh;
 }
