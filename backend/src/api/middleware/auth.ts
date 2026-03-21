@@ -1,4 +1,4 @@
-import { Context, Next } from 'hono';
+import type { Context, Next } from 'hono';
 import { supabase } from '../lib/supabase';
 import { valkey, connectValkey } from '../lib/valkey';
 
