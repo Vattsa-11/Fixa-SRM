@@ -7,6 +7,7 @@ export interface User {
   email: string;
   name: string;
   role: UserRole;
+  profilePic?: string; // Optional profile picture URL for FA and AA only
 }
 
 export interface Request {
@@ -17,6 +18,7 @@ export interface Request {
   timeSlot: string;
   dayOrder: string;
   requesterName: string;
+  requesterPic?: string; // FA profile picture (from requester)
   status: 'pending' | 'accepted' | 'rejected';
 }
 
@@ -32,13 +34,15 @@ export const MOCK_USERS = [
     email: 'fa@srmist.edu.in',
     password: 'faculty123',
     name: 'Dr. Smith',
-    role: 'faculty_advisor' as UserRole
+    role: 'faculty_advisor' as UserRole,
+    profilePic: 'https://api.dicebear.com/7.x/avataaars/svg?seed=drsmith&backgroundColor=random'
   },
   {
     email: 'aa@srmist.edu.in',
     password: 'advisor123',
     name: 'Prof. Johnson',
-    role: 'academic_advisor' as UserRole
+    role: 'academic_advisor' as UserRole,
+    profilePic: 'https://api.dicebear.com/7.x/avataaars/svg?seed=projohnson&backgroundColor=random'
   }
 ];
 
@@ -46,32 +50,35 @@ export const MOCK_USERS = [
 export const MOCK_REQUESTS: Request[] = [
   {
     id: '1',
-    subject: 'Course Registration Help',
+    subject: 'Report',
     reason: 'I need assistance with registering my courses for the next semester. I am confused about the prerequisites and course credits required for my major.',
     date: '2026-03-20',
     timeSlot: '8:00 - 8:50',
     dayOrder: 'D.O 2',
-    requesterName: 'Amit Kumar',
+    requesterName: 'Dr. Smith',
+    requesterPic: 'https://api.dicebear.com/7.x/avataaars/svg?seed=drsmith&backgroundColor=random',
     status: 'pending'
   },
   {
     id: '2',
-    subject: 'Academic Performance Discussion',
+    subject: 'Projects',
     reason: 'My grades have been declining in recent semesters and I would like to discuss strategies to improve my academic performance. I am struggling with time management and need guidance.',
     date: '2026-03-23',
     timeSlot: '9:40 - 10:30',
     dayOrder: 'D.O 3',
-    requesterName: 'Priya Sharma',
+    requesterName: 'Dr. Smith',
+    requesterPic: 'https://api.dicebear.com/7.x/avataaars/svg?seed=drsmith&backgroundColor=random',
     status: 'pending'
   },
   {
     id: '3',
-    subject: 'Internship Guidance',
+    subject: 'Internship',
     reason: 'I am applying for internships and would like advice on my resume, cover letter, and interview preparation. Any guidance on internship selection would be helpful.',
     date: '2026-03-27',
-    timeSlot: '2:00 - 2:50',
+    timeSlot: '2:40 - 3:30',
     dayOrder: 'D.O 2',
-    requesterName: 'Rahul Singh',
+    requesterName: 'Dr. Smith',
+    requesterPic: 'https://api.dicebear.com/7.x/avataaars/svg?seed=drsmith&backgroundColor=random',
     status: 'pending'
   }
 ];

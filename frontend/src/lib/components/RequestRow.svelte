@@ -1,7 +1,7 @@
 <script lang="ts">
   import { requests } from '$lib/stores';
   import type { Request } from '$lib/stores';
-  import { Check, X, CaretDown } from 'phosphor-svelte';
+  import { ThumbsUp, ThumbsDown, CaretDown } from 'phosphor-svelte';
 
   interface Props {
     request: Request;
@@ -39,52 +39,80 @@
     );
   }
 
+  function handlePending(e: Event) {
+    e.stopPropagation();
+    requests.update(reqs =>
+      reqs.map(r =>
+        r.id === request.id ? { ...r, status: 'pending' as const } : r
+      )
+    );
+  }
+
   function toggleExpand() {
     isExpanded = !isExpanded;
   }
 </script>
 
 <div class="request-card">
-  <button class="request-row" onclick={toggleExpand}>
+  <div class="request-row" onclick={toggleExpand} role="button" tabindex="0">
     <div class="request-info">
-      <div class="request-subject">{request.subject}</div>
-      <div class="request-meta">
-        <span class="date-badge">{formatDate(request.date)} ({getDayOfWeek(request.date)})</span>
-        <span class="separator">•</span>
-        <span class="time-slot">{request.timeSlot}</span>
-        <span class="separator">•</span>
-        <span class="day-order">{request.dayOrder}</span>
-        <span class="separator">•</span>
-        <span class="requester">{request.requesterName}</span>
+      {#if request.requesterPic}
+        <img src={request.requesterPic} alt={request.requesterName} class="requester-pic" />
+      {/if}
+      <div class="request-details">
+        <div class="request-subject">{request.subject}</div>
+        <div class="request-meta">
+          <span class="date-badge">{formatDate(request.date)} ({getDayOfWeek(request.date)})</span>
+          <span class="separator">•</span>
+          <span class="time-slot">{request.timeSlot}</span>
+          <span class="separator">•</span>
+          <span class="day-order">{request.dayOrder}</span>
+          <span class="separator">•</span>
+          <span class="requester">{request.requesterName}</span>
+        </div>
       </div>
     </div>
 
     <div class="actions-right">
-      {#if request.status === 'pending'}
-        <div class="action-buttons" onclick={(e) => e.stopPropagation()}>
-          <button class="btn btn-accept" onclick={handleAccept} title="Accept">
-            <Check size={18} weight="bold" />
-          </button>
-          <button class="btn btn-reject" onclick={handleReject} title="Reject">
-            <X size={18} weight="bold" />
-          </button>
-        </div>
-      {:else if request.status === 'accepted'}
-        <div class="status-badge accepted">Accepted</div>
-      {:else if request.status === 'rejected'}
-        <div class="status-badge rejected">Rejected</div>
-      {/if}
+      <div class="action-buttons" onclick={(e) => e.stopPropagation()}>
+        <button
+          class="btn btn-accept"
+          class:active={request.status === 'accepted'}
+          onclick={request.status === 'accepted' ? handlePending : handleAccept}
+          title={request.status === 'accepted' ? 'Undo Accept' : 'Accept'}
+        >
+          <ThumbsUp size={18} weight="bold" />
+        </button>
+        <button
+          class="btn btn-reject"
+          class:active={request.status === 'rejected'}
+          onclick={request.status === 'rejected' ? handlePending : handleReject}
+          title={request.status === 'rejected' ? 'Undo Reject' : 'Reject'}
+        >
+          <ThumbsDown size={18} weight="bold" />
+        </button>
+      </div>
       <div class="expand-icon" class:expanded={isExpanded}>
         <CaretDown size={18} />
       </div>
     </div>
-  </button>
+  </div>
 
   {#if isExpanded}
     <div class="request-expanded">
       <div class="reason-section">
         <h4>Full Reason</h4>
         <p>{request.reason}</p>
+      </div>
+      <div class="room-section">
+        <label for="room-{request.id}">Room Number</label>
+        <input
+          id="room-{request.id}"
+          type="text"
+          placeholder="Enter room number"
+          class="room-input"
+          onclick={(e) => e.stopPropagation()}
+        />
       </div>
     </div>
   {/if}
@@ -127,6 +155,19 @@
     flex-direction: column;
     gap: 0.5rem;
     min-width: 0;
+  }
+
+  .requester-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+  }
+
+  .request-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .request-subject {
@@ -214,6 +255,18 @@
     color: #fca5a5;
   }
 
+  .btn-accept.active {
+    background: rgba(134, 239, 172, 0.3);
+    color: #86efac;
+    border: 1px solid rgba(134, 239, 172, 0.4);
+  }
+
+  .btn-reject.active {
+    background: rgba(252, 165, 165, 0.3);
+    color: #fca5a5;
+    border: 1px solid rgba(252, 165, 165, 0.4);
+  }
+
   .status-badge {
     padding: 0.5rem 1rem;
     border-radius: 6px;
@@ -276,6 +329,40 @@
     font-size: 0.875rem;
     color: var(--color-muted);
     line-height: 1.6;
+  }
+
+  .room-section {
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .room-section label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-white);
+  }
+
+  .room-input {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-white);
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+  }
+
+  .room-input::placeholder {
+    color: rgba(191, 192, 192, 0.4);
+  }
+
+  .room-input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    background: rgba(255, 255, 255, 0.08);
   }
 
   @media (max-width: 768px) {

@@ -1,8 +1,19 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import { currentUser } from '$lib/stores';
+  import type { User } from '$lib/stores';
   import { DropdownMenu } from 'bits-ui';
-  import { User, Gear, SignOut } from 'phosphor-svelte';
+  import { User as UserIcon, Gear, SignOut, CalendarBlank } from 'phosphor-svelte';
+
+  let user = $state<User | null>(null);
+
+  // Subscribe to currentUser
+  $effect(() => {
+    const unsubscribe = currentUser.subscribe(value => {
+      user = value;
+    });
+    return unsubscribe;
+  });
 
   function handleLogout() {
     currentUser.set(null);
@@ -10,8 +21,11 @@
   }
 
   function handleProfile() {
-    // TODO: Navigate to profile page
-    alert('Profile page coming soon!');
+    goto('/profile');
+  }
+
+  function handleTimetable() {
+    goto('/timetable');
   }
 
   function handleSettings() {
@@ -22,14 +36,20 @@
 
 <DropdownMenu.Root>
   <DropdownMenu.Trigger class="profile-trigger">
-    <User size={20} weight="fill" />
+    <UserIcon size={20} weight="fill" />
   </DropdownMenu.Trigger>
   <DropdownMenu.Portal>
     <DropdownMenu.Content class="profile-dropdown" sideOffset={8} align="end">
       <DropdownMenu.Item class="dropdown-item" onclick={handleProfile}>
-        <User size={18} />
+        <UserIcon size={18} />
         <span>Profile</span>
       </DropdownMenu.Item>
+      {#if user?.role === 'academic_advisor'}
+        <DropdownMenu.Item class="dropdown-item" onclick={handleTimetable}>
+          <CalendarBlank size={18} />
+          <span>Timetable</span>
+        </DropdownMenu.Item>
+      {/if}
       <DropdownMenu.Item class="dropdown-item" onclick={handleSettings}>
         <Gear size={18} />
         <span>Settings</span>
@@ -70,12 +90,12 @@
   :global(.profile-dropdown) {
     min-width: 180px;
     padding: 0.5rem;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.2) !important;
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
     z-index: 50;
     animation: dropdownIn 0.15s ease-out;
   }

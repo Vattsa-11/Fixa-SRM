@@ -28,7 +28,7 @@
 
       // Redirect based on role
       if (user.role === 'academic_advisor') {
-        goto('/advisor');
+        goto('/approve');
       } else {
         goto('/book');
       }

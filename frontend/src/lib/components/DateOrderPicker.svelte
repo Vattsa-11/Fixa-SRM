@@ -182,15 +182,14 @@
     left: 0;
     right: 0;
     margin-top: 0.5rem;
-    background: rgba(30, 35, 50, 0.95);
-    backdrop-filter: blur(20px);
+    background: rgb(0, 0, 0);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 12px;
     padding: 1rem;
     z-index: 50;
     width: 100%;
     max-width: 320px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   }
 
   .calendar-header {

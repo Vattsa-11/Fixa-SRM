@@ -14,7 +14,7 @@
     const unsubscribe = currentUser.subscribe(value => {
       if (!value) {
         goto('/');
-      } else if (value.role !== 'academic_advisor') {
+      } else if (value.role !== 'academic_advisor' && value.role !== 'faculty_advisor') {
         goto('/book');
       } else {
         user = value;

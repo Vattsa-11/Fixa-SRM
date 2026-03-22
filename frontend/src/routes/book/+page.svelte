@@ -1,11 +1,13 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { currentUser, getDayOrderFromDate } from '$lib/stores';
+  import { currentUser, getDayOrderFromDate, MOCK_USERS } from '$lib/stores';
+  import type { User } from '$lib/stores';
+  import SidebarNav from '$lib/components/SidebarNav.svelte';
   import ProfileDropdown from '$lib/components/ProfileDropdown.svelte';
   import FormSelect from '$lib/components/FormSelect.svelte';
   import DateOrderPicker from '$lib/components/DateOrderPicker.svelte';
   import { onMount } from 'svelte';
-  import { MagnifyingGlass, Clock, PaperPlaneTilt } from 'phosphor-svelte';
+  import { MagnifyingGlass, Clock, PaperPlaneTilt, X } from 'phosphor-svelte';
 
   let searchQuery = $state('');
   let subject = $state('');
@@ -15,6 +17,16 @@
   let dayOrder = $state('');
   let isSubmitting = $state(false);
   let user = $state<{ name: string; role: string } | null>(null);
+  let searchResults = $state<User[]>([]);
+  let selectedAdvisor = $state<User | null>(null);
+
+  const subjectOptions = [
+    { value: 'report', label: 'Report' },
+    { value: 'projects', label: 'Projects' },
+    { value: 'attendance', label: 'Attendance' },
+    { value: 'internship', label: 'Internship' },
+    { value: 'others', label: 'Others' }
+  ];
 
   const timeSlotOptions = [
     { value: 'slot1', label: '8:00 - 8:50' },
@@ -79,9 +91,27 @@
 
   function handleSearch() {
     if (searchQuery.trim()) {
-      // TODO: Implement search functionality
-      alert(`Searching for: ${searchQuery}`);
+      // Search for academic advisors by name or email
+      const query = searchQuery.toLowerCase();
+      searchResults = MOCK_USERS.filter(u =>
+        u.role === 'academic_advisor' &&
+        (u.name.toLowerCase().includes(query) || u.email.toLowerCase().includes(query))
+      );
+    } else {
+      searchResults = [];
     }
+  }
+
+  function selectAdvisor(advisor: User) {
+    selectedAdvisor = advisor;
+    searchResults = [];
+    searchQuery = advisor.name;
+  }
+
+  function clearSearch() {
+    selectedAdvisor = null;
+    searchQuery = '';
+    searchResults = [];
   }
 
   async function handleSubmit(e: Event) {
@@ -94,7 +124,7 @@
     alert('Appointment request submitted! (Mock)');
 
     // Reset form
-    searchQuery = '';
+    clearSearch();
     subject = '';
     reason = '';
     date = '';
@@ -107,8 +137,7 @@
 <div class="page-container">
   <header class="header">
     <div class="header-left">
-      <img src="/logo.webp" alt="Fixa" class="header-logo" />
-      <span class="header-title">Fixa</span>
+      <SidebarNav />
     </div>
     <div class="header-right">
       <span class="user-name">{user?.name}</span>
@@ -127,28 +156,71 @@
           <input
             type="text"
             bind:value={searchQuery}
-            placeholder="Search Academic Advisor..."
+            onkeyup={handleSearch}
+            placeholder="Search Faculty Name..."
             class="search-input"
           />
-          <button type="button" class="search-btn" onclick={handleSearch} aria-label="Search">
+          <button
+            type="button"
+            class="search-btn"
+            onclick={handleSearch}
+            aria-label="Search"
+          >
             <MagnifyingGlass size={20} weight="bold" />
           </button>
         </div>
+
+        <!-- Search Results -->
+        {#if searchResults.length > 0}
+          <div class="search-results">
+            {#each searchResults as result}
+              <button
+                type="button"
+                class="result-item"
+                onclick={() => selectAdvisor(result)}
+              >
+                {#if result.profilePic}
+                  <img src={result.profilePic} alt={result.name} class="result-pic" />
+                {/if}
+                <div class="result-info">
+                  <div class="result-name">{result.name}</div>
+                  <div class="result-email">{result.email}</div>
+                </div>
+              </button>
+            {/each}
+          </div>
+        {/if}
+
+        <!-- Selected Advisor -->
+        {#if selectedAdvisor}
+          <div class="selected-advisor">
+            <div class="selected-header">
+              <span class="selected-label">Selected Advisor</span>
+              <button type="button" class="clear-btn" onclick={clearSearch} aria-label="Clear">
+                <X size={16} />
+              </button>
+            </div>
+            <div class="selected-content">
+              {#if selectedAdvisor.profilePic}
+                <img src={selectedAdvisor.profilePic} alt={selectedAdvisor.name} class="selected-pic" />
+              {/if}
+              <div class="selected-info">
+                <div class="selected-name">{selectedAdvisor.name}</div>
+                <div class="selected-email">{selectedAdvisor.email}</div>
+              </div>
+            </div>
+          </div>
+        {/if}
       </div>
 
       <!-- Subject -->
       <div class="form-group">
-        <label for="subject">Subject</label>
-        <input
-          type="text"
-          id="subject"
+        <label>Subject</label>
+        <FormSelect
+          options={subjectOptions}
           bind:value={subject}
-          placeholder="Brief subject (max 100 characters)"
-          maxlength="100"
-          required
-          class="form-input"
+          placeholder="Select subject"
         />
-        <span class="char-count">{subject.length}/100</span>
       </div>
 
       <!-- Full Reason -->
@@ -233,18 +305,6 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-  }
-
-  .header-logo {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-  }
-
-  .header-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-white);
   }
 
   .header-right {
@@ -338,6 +398,137 @@
 
   .search-btn:active {
     transform: scale(0.95);
+  }
+
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 0.5rem;
+    z-index: 50;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .result-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: left;
+  }
+
+  .result-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--color-white);
+  }
+
+  .result-pic {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .result-info {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .result-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-white);
+  }
+
+  .result-email {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+  }
+
+  .selected-advisor {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(49, 45, 94, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+  }
+
+  .selected-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .selected-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .clear-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .clear-btn:hover {
+    background: rgba(252, 165, 165, 0.2);
+    color: #fca5a5;
+  }
+
+  .selected-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .selected-pic {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+
+  .selected-info {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .selected-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-white);
+  }
+
+  .selected-email {
+    font-size: 0.8rem;
+    color: var(--color-muted);
   }
 
   .form-group {
