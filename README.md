@@ -1,4 +1,4 @@
-# Fixa  [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Vattsa-11_Fixa-SRM&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Vattsa-11_Fixa-SRM)
+# Fixa 
 
 Fixa is an appointment booking application for SRM IST Kattankulathur. It allows students, faculty advisors, academic advisors, and heads of departments to schedule and manage meetings.
 
