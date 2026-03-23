@@ -103,7 +103,7 @@ async function pollQueue() {
           // again after VISIBILITY_TIMEOUT_SEC. 
           // Note: Dead-letter queue (DLQ) requires pgmq v1.0.0+ archive feature, 
           // but for now, pgmq will just retry it forever or until max attempts if configured.
-          console.error(`Job ${msg.msg_id} failed and will likely be retried.`);
+          console.error(`Job ${msg.msg_id} failed and will likely be retried:`, jobError);
         }
       }
     }

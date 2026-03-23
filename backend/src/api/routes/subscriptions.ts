@@ -1,7 +1,6 @@
 import { Hono } from 'hono';
 import { db } from '../../db';
 import { pwaSubscriptions } from '../../db/schema';
-import { eq } from 'drizzle-orm';
 import { enqueueNotification } from '../../lib/queue';
 
 import type { User } from '@supabase/supabase-js';
@@ -58,6 +57,7 @@ app.post('/test-push', async (c) => {
 
     return c.json({ success: true, messageId });
   } catch (err) {
+    console.error('Failed to enqueue notification:', err);
     return c.json({ error: 'Failed to enqueue notification' }, 500);
   }
 });

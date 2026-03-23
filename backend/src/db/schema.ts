@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, varchar, boolean } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 
 export const pwaSubscriptions = pgTable('pwa_subscriptions', {
