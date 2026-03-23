@@ -4,7 +4,7 @@ import { valkey, connectValkey } from '../lib/valkey';
 
 export const authGuard = async (c: Context, next: Next) => {
   const authHeader = c.req.header('Authorization');
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!authHeader?.startsWith('Bearer ')) {
     return c.json({ error: 'Missing or invalid Authorization header' }, 401);
   }
 

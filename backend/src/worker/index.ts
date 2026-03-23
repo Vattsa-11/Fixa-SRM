@@ -119,4 +119,4 @@ async function pollQueue() {
 
 // Start worker
 console.log('Starting Notification Worker...');
-pollQueue();
+await pollQueue();

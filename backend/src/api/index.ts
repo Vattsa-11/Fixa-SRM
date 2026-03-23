@@ -25,6 +25,7 @@ app.use('/api/*', authGuard);
 app.route('/api/subscriptions', subscriptionsRouter);
 
 // Database initialization
-initQueues().then(() => console.log('Queues initialized.'));
+await initQueues();
+console.log('Queues initialized.');
 
 export default app;
