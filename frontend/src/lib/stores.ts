@@ -86,6 +86,27 @@ export const MOCK_REQUESTS: Request[] = [
 export const currentUser = writable<User | null>(null);
 export const requests = writable<Request[]>(MOCK_REQUESTS);
 
+// Helper: Count weekdays between two dates (returns signed count)
+function countWeekdaysBetween(from: Date, to: Date): number {
+  if (from.getTime() === to.getTime()) {
+    return 0;
+  }
+
+  const isForward = to > from;
+  let count = 0;
+  let current = new Date(from);
+
+  while (current.getTime() !== to.getTime()) {
+    current.setDate(current.getDate() + (isForward ? 1 : -1));
+    const dow = current.getDay();
+    if (dow !== 0 && dow !== 6) {
+      count += isForward ? 1 : -1;
+    }
+  }
+
+  return count;
+}
+
 // Utility function to get D.O based on date
 // D.O 1-5 cycles continuously Mon-Fri, skipping weekends
 // Reference: 2026-03-19 (Thursday) = D.O 1
@@ -98,26 +119,8 @@ export function getDayOrderFromDate(dateStr: string): string {
     return '';
   }
 
-  // Reference point: March 19, 2026 (Thursday) = D.O 1
   const referenceDate = new Date('2026-03-19T00:00:00');
-
-  // Count weekdays from reference to target date
-  let weekdayCount = 0;
-  let current = new Date(referenceDate);
-  const isAfterReference = date > referenceDate;
-
-  if (date.getTime() === referenceDate.getTime()) {
-    // Same day as reference
-    weekdayCount = 0;
-  } else {
-    while (current.getTime() !== date.getTime()) {
-      current.setDate(current.getDate() + (isAfterReference ? 1 : -1));
-      const dow = current.getDay();
-      if (dow !== 0 && dow !== 6) {
-        weekdayCount += isAfterReference ? 1 : -1;
-      }
-    }
-  }
+  const weekdayCount = countWeekdaysBetween(referenceDate, date);
 
   // Calculate D.O (1-5 cycle, handles negative weekdayCount safely)
   const doNumber = ((weekdayCount % 5) + 5) % 5 + 1;
