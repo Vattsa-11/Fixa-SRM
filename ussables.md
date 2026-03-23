@@ -12,3 +12,6 @@
 ##  Icons
 * [Phosphor Icons](https://phosphoricons.com/)
 * [Lucide](https://lucide.dev/)
+
+## Backend
+* Drizzle ORM + postgres.js
